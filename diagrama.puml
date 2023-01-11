@@ -64,7 +64,8 @@ class Forum {
 +criaForum(Usuario usuario): void
 }
 
-class Verificador {
+rectangle "regras de negócio" #line.dashed {
+    class Verificador {
 +validarCEP(String CEP): boolean
 +validarSenha(String senha): boolean
 +validarNickname(String nickname): boolean
@@ -81,6 +82,7 @@ class Autenticador {
 +autorizadoApagarConta(Usuario usuario): boolean
 +autorizadoLogin(Usuario usuario): boolean
 +autorizadoApagarComentario(Usuario usuario): boolean
+}
 }
 
 class AdministradorForum {
