@@ -1,0 +1,75 @@
+@startuml
+
+actor Usuário as g
+
+package Forum {
+  actor Participante as c
+  actor administrador as fc
+}
+
+package AçõesParticipante{
+  usecase "Up em postagem" as UC1
+  usecase "Down em postagem" as UC2
+  usecase "Favoritar postagem" as UC3
+  usecase "Down comentario" as UC4
+  usecase "Up comentario" as UC5
+  usecase "Comentar postagem" as UC6
+  usecase "Responder comentario" as UC7
+  usecase "Apagar os próprios comentarios" as UC8
+  usecase "Criar postagens" as UC9
+  usecase "Apagar as prórpias postagens" as UC10
+}
+package AçõesUsuário {
+  usecase "Alterar senha" as UC11
+  usecase "Realizar a busca por outros usuários" as UC12
+  usecase "Adicionar amigo" as UC13
+  usecase "Remover amigos" as UC14
+  usecase "Enviar mensagens para outros usuários" as UC15
+  usecase "Alterar foro de perfil" as UC16
+  usecase "Criar Forum" as UC17
+  usecase "Login" as UC18
+  usecase "Logout" as UC19
+  usecase "Apagar conta" as UC20
+}
+package AçõesAdministrador{
+  usecase "Remover participante" as UC21
+  usecase "Remover outros administradores" as UC22
+  usecase "Apagar postagems de terceiros" as UC23
+  usecase "Apagar comentários de terceiros" as UC24
+  usecase "Mudar descrição do Forum" as UC25
+}
+  
+
+
+c --|> g
+fc --|> c
+
+
+c --> UC1
+c --> UC2
+c --> UC3
+c --> UC4
+c --> UC5
+c --> UC6
+c --> UC7
+c --> UC8
+c --> UC9
+c --> UC10
+
+g --> UC11
+g --> UC12
+g --> UC13
+g --> UC14
+g --> UC15
+g --> UC16
+g --> UC17
+g --> UC18
+g --> UC19
+g --> UC20
+
+fc --> UC21
+fc --> UC22
+fc --> UC23
+fc --> UC24
+fc --> UC25
+@enduml
