@@ -1,5 +1,9 @@
 @startuml
 
+
+
+package Baddit {
+    
 actor Usuário as g
 
 package Forum {
@@ -8,6 +12,7 @@ package Forum {
 }
 
 package AçõesParticipante{
+
   usecase "Up em postagem" as UC1
   usecase "Down em postagem" as UC2
   usecase "Favoritar postagem" as UC3
@@ -38,8 +43,7 @@ package AçõesAdministrador{
   usecase "Apagar comentários de terceiros" as UC24
   usecase "Mudar descrição do Forum" as UC25
 }
-  
-
+}
 
 c --|> g
 fc --|> c
