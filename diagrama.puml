@@ -1,6 +1,5 @@
 @startuml diagrama
 
-
 class Endereco {
 -rua: String
 -bairro: String
@@ -9,14 +8,13 @@ class Endereco {
 -estado: enum
 -cidade: enum
 -CEP: String
-+validarCEP(): boolean
+-numero: int
 }
 
 class Pessoa {
 -nome: String
 -sobrenome: String
 -dataDeNascimento: Date
-+cadastrar(): boolean
 }
 
 class Usuario {
@@ -27,21 +25,18 @@ class Usuario {
 -fotoPerfil: String
 -descricao: String
 -tag: String
-+validarSenha(String senha): boolean
-+validarNickname(String nickname): boolean
-+validarEmail(String email): boolean
 +adicionaFotoPerfil(String imagem): void
 +busca(String nome): List<Usuario>
 +busca(String tag): Usuario
 +armazenaBusca(List<Usuario>): void
 +adicionaAmigo(Usuario usuario): void
 +removeAmigo(Usuario usuario): void
-+alterarSenha(String senha): void
++alteraSenha(String senha): void
++cadastrarPessoa(Pessoa pessoa): boolean
 +login(): void
 +logout(): void
 +apagarConta(): void
 }
-
 
 class Mensagem {
 -data: Date
@@ -50,30 +45,51 @@ class Mensagem {
 -imagem: String
 -video: String
 -id: String
-+enviarMensagem(Usuario usuario): void
-+apagarMensagem(String id): void
++enviarMensagem(): void
++apagarMensagem(): void
+}
+
+class Forum {
+-nome: String
+-descricao: String
+-quantidadeParticipantes: int
+-id: String
++adicionarDescricao(String descricao): void
++adicionaParticipante(Usuario usuario): void
++removeParticipante(ParticipanteForum participante): void
++adicionaAdministrador(ParticipanteForum participante): boolean
++removeAdministrador(AdministradorForum administrador): void
++adicionaPostagem(Postagem postagem): void
++removePostagem(Postagem postagem): void
++criaForum(Usuario usuario): void
+}
+
+rectangle "regras de negócio" #line.dashed {
+    class Verificador {
++validarCEP(String CEP): boolean
++validarSenha(String senha): boolean
++validarNickname(String nickname): boolean
++validarEmail(String email): boolean
+}
+
+class Autenticador {
++autorizadoAdicionarDescricao(Usuario usuario): boolean
++autorizadoRemoverParticipante(Usuario usuario): boolean
++autorizadoRemoverAdministrador(Usuario usuario): boolean
++autorizadoAdicionarAdministrador(Usuario usuario): boolean
++autorizadoRemoverPostagem(Usuario usuario): boolean
++autorizadoAlterarSenha(Usuario usuario): boolean
++autorizadoApagarConta(Usuario usuario): boolean
++autorizadoLogin(Usuario usuario): boolean
++autorizadoApagarComentario(Usuario usuario): boolean
+}
 }
 
 class AdministradorForum {
-+removeParticipante(Usuario usuario): void
-+adicionaAdministrador(Usuario usuario): void
-+removeAdministrador(Usuario usuario): void
-+apagaPostagem(Postagem postagem): void
-+apagaComentario(Comentario comentario): void
-+adicionarDescricao(String descricao): void
 }
 
-
-
 class ParticipanteForum {
-+upPostagem(Postagem postagem): void
-+downPostagem(Postagem postagem): void
-+comentarPostagem(Postagem postagem): void
-+criarPostagem(): void
-+comentarComentario(Comentario comentario): void
-+upComentario(Comentario comentario): void
-+downComentario(Comentario comentario): void
-+participarForum(Forum forum): void
++favoritarPostagem(Postagem postagem): void
 }
 
 class Comentario {
@@ -82,17 +98,9 @@ class Comentario {
 -quantidadeUps: int
 -quantidadeDowns: int
 -id: String
-}
-
-class Forum {
--nome: String
--descricao: String
--quantidadeParticipantes: int
--id: String
-+buscaPostagem(Date data): List<Postagem>
-+buscaPostagem(ParticipanteForum participante): List<Postagem>
-+buscaPostagem(String texto): List<Postagem>
-+criaForum(): void
++resposderComentario(Comentario resposta): void
++upComentario(ParticipanteForum participante): void
++downComentario(ParticipanteForum participante): void
 }
 
 class Postagem {
@@ -103,20 +111,26 @@ class Postagem {
 -id: String
 -quantidadeUps: int
 -quantidadeDowns: int
++upPostagem(ParticipanteForum participante): void
++downPostagem(ParticipanteForum participante): void
++adicionaComentario(Comentario comentario): void
++apagaComentario(Comentario comentario): void
 }  
 
-
-Postagem "1" *-up-> "N" Comentario
-Forum "1" -down-> "N" ParticipanteForum
-Forum "1" -down-> "N" AdministradorForum
-Forum "1" *-up-> "N" Postagem
+Forum "1" --> "1" Usuario : criador
+Comentario "1" --> "1" ParticipanteForum : criador
+Postagem "1" --> "1" ParticipanteForum : criador
+ParticipanteForum "1" --> "N" Postagem : favoritas
+Postagem "1" *-up-> "N" Comentario : comentarios
+Comentario "1" -right-> "N" Comentario : respostas
+Forum "1" -down-> "N" ParticipanteForum : participantes
+Forum "1" -down-> "N" AdministradorForum : administradores
+Forum "1" *-up-> "N" Postagem : postagens
 ParticipanteForum --|> Usuario
 AdministradorForum -right-|> ParticipanteForum
 Usuario "1" --> "N" Usuario : amigos
-Usuario "1" -down-> "1" Pessoa
+Usuario "1" o-down- "1" Pessoa
 Pessoa "1" -down-> "1" Endereco
 Mensagem "1" -right-> "1" Usuario : remetente
 Mensagem "1" -right-> "1" Usuario : destinatario
-
-
 @enduml
