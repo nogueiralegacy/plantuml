@@ -15,6 +15,7 @@ class Pessoa {
 -nome: String
 -sobrenome: String
 -dataDeNascimento: Date
++cadastrarPessoa(Pessoa pessoa): boolean
 }
 
 class Usuario {
@@ -32,7 +33,6 @@ class Usuario {
 +adicionaAmigo(Usuario usuario): void
 +removeAmigo(Usuario usuario): void
 +alteraSenha(String senha): void
-+cadastrarPessoa(Pessoa pessoa): boolean
 +login(): void
 +logout(): void
 +apagarConta(): void
