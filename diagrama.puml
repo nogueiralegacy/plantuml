@@ -1,5 +1,30 @@
 @startuml diagrama
 
+rectangle "persistância (Repository)" #line.dashed {
+    class ClassName<Repository> {
++save(Type type): void
++delete(Type type): void
++update(Type type): void
++findById(String id): Type
++findAll(): List<Type>
+    }
+}
+
+interface IClassName<Repository> {
++save(Type type): void
++delete(Type type): void
++update(Type type): void
++findById(String id): Type
++findAll(): List<Type>
+}
+
+rectangle "UI" #line.dashed {
+class "UI" {
++main(): void
+}
+}
+
+
 class Endereco {
 -rua: String
 -bairro: String
@@ -92,15 +117,52 @@ class ParticipanteForum {
 +favoritarPostagem(Postagem postagem): void
 }
 
-class Comentario {
+class Comentario{
+-imagem: String
+-video: String
 -data: Date
 -texto: String
 -quantidadeUps: int
 -quantidadeDowns: int
 -id: String
++Comentario(ComentarioStates estado): void
 +resposderComentario(Comentario resposta): void
 +upComentario(ParticipanteForum participante): void
 +downComentario(ParticipanteForum participante): void
++adicionaVideo(String video): void
++removeVideo(): void
++adicionaImagem(String imagem): void
++removeImagem(): void
+}
+
+class ComentarioPlebeu implements ComentarioStates {
++resposderComentario(Comentario resposta): void
++upComentario(ParticipanteForum participante): void
++downComentario(ParticipanteForum participante): void
++adicionaVideo(String video): void
++removeVideo(): void
++adicionaImagem(String imagem): void
++removeImagem(): void
+}
+
+interface ComentarioStates {
++resposderComentario(Comentario resposta): void
++upComentario(ParticipanteForum participante): void
++downComentario(ParticipanteForum participante): void
++adicionaVideo(String video): void
++removeVideo(): void
++adicionaImagem(String imagem): void
++removeImagem(): void
+}
+
+class ComentarioPremium implements ComentarioStates {
++resposderComentario(Comentario resposta): void
++upComentario(ParticipanteForum participante): void
++downComentario(ParticipanteForum participante): void
++adicionaVideo(String video): void
++removeVideo(): void
++adicionaImagem(String imagem): void
++removeImagem(): void
 }
 
 class Postagem {
@@ -115,9 +177,15 @@ class Postagem {
 +downPostagem(ParticipanteForum participante): void
 +adicionaComentario(Comentario comentario): void
 +apagaComentario(Comentario comentario): void
++adicionaVideo(String video): void
++removeVideo(): void
++adicionaImagem(String imagem): void
++removeImagem(): void
 }  
 
-Forum "1" --> "1" Usuario : criador
+
+Comentario "1" -left-> "1" ComentarioStates : estado
+Forum "1" -left-> "1" Usuario : criador
 Comentario "1" --> "1" ParticipanteForum : criador
 Postagem "1" --> "1" ParticipanteForum : criador
 ParticipanteForum "1" --> "N" Postagem : favoritas
