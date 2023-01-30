@@ -90,6 +90,11 @@ class Forum {
 }
 
 rectangle "regras de negócio" #line.dashed {
+
+class Controller {
+    +acaoRequisitada(Evento evento): void
+    }
+
     class Verificador {
 +validarCEP(String CEP): boolean
 +validarSenha(String senha): boolean
